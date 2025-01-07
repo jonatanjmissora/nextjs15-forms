@@ -8,7 +8,7 @@ export type ResType = {
   prevState?: Record<string, string>,
   errors?: Record<string, string>,
   server?: string,
-}
+} | null
 
 export const useLoginActionState = () => {
 
@@ -31,7 +31,7 @@ export const useLoginActionState = () => {
       return responseObj
     }
 
-    const { success: serverSuccess, message } = await addTodo(newTodo)
+    const { success: serverSuccess, message } = await addTodo(data)
     //server validation
     if (!serverSuccess) {
       toast.error("Error Servidor")
@@ -40,9 +40,10 @@ export const useLoginActionState = () => {
     }
 
     toast.success("Todo añadido")
-    return {
-      success: true, server: message
-    }
+    responseObj.success = true
+    responseObj.server = message
+    responseObj.prevState = { title: "", content: "" }
+    return responseObj
 
   }, null)
 

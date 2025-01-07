@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react"
 import toast from "react-hot-toast"
-import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
 import { addTodo } from "../_actions/addTodo.action"
+import { InputRHF } from "../_components/InputRHF"
 
 export default function FormWithUseActionState() {
 
@@ -30,7 +31,7 @@ export default function FormWithUseActionState() {
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className='flex gap-4 flex-col p-4 border m-4'>
 
-      <code>onSubmit="{"hanldeSubmit(onSubmit)"}"<br />
+      <code>onSubmit=`{`hanldeSubmit(onSubmit)`}<br />
         1 - verificacion del cliente con RHF<br />
         2 - invoco server action addTodo(newTodo)<br />
         3 - dentro del onSubmit<br />
@@ -39,28 +40,13 @@ export default function FormWithUseActionState() {
 
       <h2 className='text-2xl font-bold tracking-wide'>Server Action + RHF 👍</h2>
 
-      <Input label={"title"} register={register} error={errors?.title?.message || ""} />
-      <Input label={"content"} register={register} error={errors?.content?.message || ""} />
+      <InputRHF label={"title"} error={errors?.title?.message || ""} register={register} />
+      <InputRHF label={"content"} error={errors?.content?.message || ""} register={register} />
 
       <button className='btn btn-primary' type="submit" disabled={isSubmitting}>Crear</button>
 
       {<p className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse?.message && serverResponse.message}</p>}
 
     </form>
-  )
-}
-
-const Input = ({ label, register, error }: { label: "title" | "content", register: UseFormRegister< TodoType >, error: string }) => {
-  return (
-    <>
-      <input
-        className={`input input-primary text-center text-slate-900 ${error && 'input-error'} bg-slate-200`}
-        type="text"
-        name={label}
-        placeholder={`... ${label} ...`}
-        {...register(`${label}`)}
-      />
-      <p>{error && error}</p>
-    </>
   )
 }

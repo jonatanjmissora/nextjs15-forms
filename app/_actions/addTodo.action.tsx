@@ -4,7 +4,7 @@ import { todoSchema, TodoType } from "../_lib/schema/todo.schema";
 
 export type FormState = {
   success: boolean;
-  prevState: {title?: string, content?: string};
+  prevState: { title?: string, content?: string };
   message: string;
 };
 
@@ -26,7 +26,7 @@ export const addTodo = async (
     //insertar en DB
     return { success: true, prevState: newTodo, message: "Todo creado satisfactoriamente" }
   } catch (error) {
-    return { success: false, prevState: newTodo, message: "Server Error" }
+    return { success: false, prevState: newTodo, message: JSON.stringify(error) || "Server Error" }
   }
 
 }

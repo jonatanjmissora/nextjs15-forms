@@ -20,7 +20,7 @@ export const addTodo = async (newTodo: TodoType) => {
     revalidatePath("/")
     return { success: true, message: "Todo creado satisfactoriamente" }
   } catch (error) {
-    return { success: false, message: "Server Error" }
+    return { success: false, message: JSON.stringify(error) ?? "Server Error" }
   }
 
 }

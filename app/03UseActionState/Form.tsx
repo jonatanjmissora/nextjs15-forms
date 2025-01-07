@@ -15,9 +15,9 @@ export default function FormWithUseActionState() {
 
       <h2 className='text-2xl font-bold tracking-wide'>useActionState 👍</h2>
 
-      <Input label='title' value={formState?.prevState?.title || ""} error={formState?.errors?.title} />
+      <Input label='title' value={formState?.prevState?.title || ""} error={formState?.errors?.title || ""} />
 
-      <Input label='content' value={formState?.prevState?.content || ""} error={formState?.errors?.content} />
+      <Input label='content' value={formState?.prevState?.content || ""} error={formState?.errors?.content || ""} />
 
       <button className='btn btn-primary' type="submit" disabled={isPending}>{isPending ? "..." : "Crear"}</button>
 
