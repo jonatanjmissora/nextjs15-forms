@@ -1,6 +1,7 @@
 "use client"
 
-import { useLoginActionState } from "./useFormHook"
+import { Input } from "../_components/Input"
+import { useLoginActionState } from "../_lib/hooks/useFormHook"
 
 export default function FormWithUseActionState() {
 
@@ -15,30 +16,15 @@ export default function FormWithUseActionState() {
 
       <h2 className='text-2xl font-bold tracking-wide'>useActionState 👍</h2>
 
-      <Input label='title' value={formState?.prevState?.title || ""} error={formState?.errors?.title || ""} />
+      <Input label='title' defaultValue={formState?.prevState?.title || ""} error={formState?.errors?.title || ""} />
 
-      <Input label='content' value={formState?.prevState?.content || ""} error={formState?.errors?.content || ""} />
+      <Input label='content' defaultValue={formState?.prevState?.content || ""} error={formState?.errors?.content || ""} />
 
       <button className='btn btn-primary' type="submit" disabled={isPending}>{isPending ? "..." : "Crear"}</button>
 
       {<p className={`${formState?.success ? "text-green-700" : "text-red-700"}`}>{formState?.server && formState?.server}</p>}
 
     </form>
-  )
-}
-
-const Input = ({ label, value, error }: { label: string, value: string, error: string }) => {
-  return (
-    <>
-      <input
-        className={`input input-primary text-slate-600 text-center ${error && 'input-error'}`}
-        type="text"
-        name={label}
-        defaultValue={value}
-        placeholder={`... ${label} ...`}
-      />
-      <p>{error && error}</p>
-    </>
   )
 }
 

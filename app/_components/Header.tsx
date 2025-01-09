@@ -4,10 +4,10 @@ import HeaderLink from './HeaderLink'
 
 const NavLinks = [
   { href: "/01ClientAndServerAction", text: "Client Action + Server Action" },
-  { href: "/02RHFAndServerAction", text: "HFR + Server Action" },
+  { href: "/02RHFAndServerAction", text: "RHF + Server Action" },
   { href: "/03UseActionState", text: "useActionState" },
+  { href: "/04RHFAndUseActionState", text: "RHF + useActionState" },
   { href: "/05UseActionStateAndModal", text: "useActionState + Modal" },
-  { href: "/06UseActionStateAndRHFVideo", text: "useActionState + RHF Video" },
 ]
 
 export default async function Header() {

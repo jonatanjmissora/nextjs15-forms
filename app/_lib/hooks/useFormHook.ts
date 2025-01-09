@@ -1,7 +1,7 @@
 import { useActionState } from "react";
-import { todoSchema, TodoType } from "./todo.schema";
 import toast from "react-hot-toast";
-import { addTodo } from "./actions";
+import { addTodo } from "../../_actions/addTodo.action";
+import { todoSchema, TodoType } from "../schema/todo.schema";
 
 export type ResType = {
   success: boolean;
@@ -14,7 +14,7 @@ export const useLoginActionState = () => {
 
   const [formState, formAction, isPending] = useActionState(async (prevState: ResType, formData: FormData): Promise<ResType> => {
     const newTodo = Object.fromEntries(formData.entries())
-
+console.log("entro")
     const responseObj = {
       success: false,
       prevState: newTodo as TodoType,
