@@ -18,7 +18,7 @@ export const Input = ({ className, label, ...props }: InputProps) => {
         placeholder={props.placeholder ?? label}
         {...props}
       />
-      <p className='text-red-700'>{props.error && props.error}</p>
+      <p id={`${label}-error`} className='text-red-700'>{props.error && props.error}</p>
     </>
   )
 }
