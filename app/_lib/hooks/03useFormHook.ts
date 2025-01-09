@@ -5,16 +5,16 @@ import { todoSchema, TodoType } from "../schema/todo.schema";
 
 export type ResType = {
   success: boolean;
-  prevState?: Record<string, string>,
-  errors?: Record<string, string>,
+  prevState: Record<string, string>,
+  errors: Record<string, string>,
   server?: string,
 } | null
 
-export const useLoginActionState = () => {
+export const useFormHook = () => {
 
   const [formState, formAction, isPending] = useActionState(async (prevState: ResType, formData: FormData): Promise<ResType> => {
     const newTodo = Object.fromEntries(formData.entries())
-console.log("entro")
+    console.log("entro")
     const responseObj = {
       success: false,
       prevState: newTodo as TodoType,

@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useTodoActionState } from "./useFormHook"
-import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form"
+import { useState } from "react"
+import { useFormHook } from "../_lib/hooks/05useFormHookWithModal"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { todoSchema, TodoType } from "./todo.schema"
+import { InputRHF } from "../_components/InputRHF"
+import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
 
 export default function FormClient() {
 
@@ -12,7 +13,7 @@ export default function FormClient() {
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
   const { register, reset, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
-  const [formState, formAction, isPending] = useTodoActionState(setInputValues, setShowConfirm, reset)
+  const [formState, formAction, isPending] = useFormHook(setInputValues, setShowConfirm, reset)
 
   const onSubmit: SubmitHandler<TodoType> = (data) => {
     const title = data?.title || ""
@@ -34,8 +35,8 @@ export default function FormClient() {
                 <p>content: {inputValues.content}</p>
               </div>
 
-              <Input label='title' value={inputValues.title} error={errors?.title?.message} register={register} className="hidden" />
-              <Input label='content' value={inputValues.content} error={errors?.content?.message} register={register} className="hidden" />
+              <InputRHF label='title' defaultValue={inputValues.title} error={errors?.title?.message} register={register} className="hidden" />
+              <InputRHF label='content' defaultValue={inputValues.content} error={errors?.content?.message} register={register} className="hidden" />
 
               <button type="submit" className="btn btn-primary" disabled={isPending}>Confirmar</button>
               <button type="button" className="btn btn-error" onClick={() => setShowConfirm(prev => !prev)}>Cancelar</button>
@@ -47,8 +48,8 @@ export default function FormClient() {
 
               <h2 className='text-2xl font-bold tracking-wide'>useActionState + RHF + Confirm 👍</h2>
 
-              <Input label='title' value={inputValues.title} error={errors?.title?.message} register={register} />
-              <Input label='content' value={inputValues.content} error={errors?.content?.message} register={register} />
+              <InputRHF label='title' defaultValue={inputValues.title} error={errors?.title?.message} register={register} />
+              <InputRHF label='content' defaultValue={inputValues.content} error={errors?.content?.message} register={register} />
 
               <button type="submit" className="btn btn-primary" >Crear</button>
 
@@ -61,22 +62,6 @@ export default function FormClient() {
             </form>
           )
       }
-    </>
-  )
-}
-
-const Input = ({ label, value, error, register, className }: { label: string, value: string, error: string, register: UseFormRegister<{ [key: string]: string }>, className?: string }) => {
-  return (
-    <>
-      <input
-        className={`input input-primary text-slate-600 text-center ${error && 'input-error'} ${className}`}
-        type="text"
-        name={label}
-        defaultValue={value}
-        placeholder={`... ${label} ...`}
-        {...register(`${label}`)}
-      />
-      <p>{error && error}</p>
     </>
   )
 }

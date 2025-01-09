@@ -4,7 +4,7 @@ import { todoSchema, TodoType } from "../_lib/schema/todo.schema";
 
 export type FormState = {
   success: boolean;
-  prevState: { title?: string, content?: string };
+  prevState: Record<string, string>;
   message: string;
 };
 

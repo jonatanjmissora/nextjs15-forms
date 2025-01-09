@@ -1,11 +1,11 @@
 "use client"
 
 import { Input } from "../_components/Input"
-import { useLoginActionState } from "../_lib/hooks/useFormHook"
+import { useFormHook } from "../_lib/hooks/03useFormHook"
 
 export default function FormWithUseActionState() {
 
-  const [formState, formAction, isPending] = useLoginActionState()
+  const [formState, formAction, isPending] = useFormHook()
 
   return (
     <form action={formAction} className='flex gap-4 flex-col p-4 m-4 w-1/4'>

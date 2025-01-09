@@ -1,18 +1,18 @@
 import { useActionState } from "react";
-import { TodoType } from "./todo.schema";
 import toast from "react-hot-toast";
-import { addTodo } from "./actions";
 import { UseFormReset } from "react-hook-form";
+import { TodoType } from "../schema/todo.schema";
+import { addTodo } from "../../_actions/addTodo.action";
 
 export type ResType = {
   success: boolean;
-  prevState: { title?: string, content?: string };
+  prevState: Record<string, string>;
   message: string;
-}
+} | null
 
-export const useTodoActionState = (reset: UseFormReset<{
-  title?: string;
-  content?: string;
+export const useFormHookOnlyServer = (reset: UseFormReset<{
+  title: string;
+  content: string;
 }>) => {
 
   const [formState, formAction, isPending] = useActionState(async (prevState: ResType, formData: FormData): Promise<ResType> => {
