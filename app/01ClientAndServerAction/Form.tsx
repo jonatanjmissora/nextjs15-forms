@@ -67,8 +67,8 @@ export default function Form() {
 
       {
         !serverResponse.success
-          ? <div className="text-red-500">{serverResponse?.message}</div>
-          : <div className="text-green-500">{serverResponse?.message}</div>
+          ? <p id="server-error" className="text-red-500">{serverResponse?.message}</p>
+          : <p id="server-success" className="text-green-500">{serverResponse?.message}</p>
       }
 
     </form>

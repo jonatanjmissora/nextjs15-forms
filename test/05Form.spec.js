@@ -1,14 +1,14 @@
 import { Builder, By } from 'selenium-webdriver'
 import assert from "assert"
 
-describe("TEST 01", async () => {
+describe("TEST 05", async () => {
 
   let driver;
 
   before(async function () {
     this.timeout(0)
     driver = new Builder().forBrowser("chrome").build();
-    await driver.get("http://localhost:3000/01ClientAndServerAction/");
+    await driver.get("http://localhost:3000/05UseActionStateAndModal");
   })
 
   after(async () => {
@@ -44,6 +44,8 @@ describe("TEST 01", async () => {
     await driver.findElement(By.name("content")).sendKeys("content")
     
     await driver.findElement(By.css(`[type="submit"]`)).click()
+    await driver.sleep(200)
+    await driver.findElement(By.css(`[type="submit"]`)).click()
     await driver.sleep(2000)
 
     let serverErrorText = await driver.findElement(By.id("server-error")).getText()
@@ -58,10 +60,12 @@ describe("TEST 01", async () => {
     await driver.findElement(By.name("content")).sendKeys("content")
     
     await driver.findElement(By.css(`[type="submit"]`)).click()
+    await driver.sleep(200)
+    await driver.findElement(By.css(`[type="submit"]`)).click()
     await driver.sleep(2000)
 
     let serverSuccessText = await driver.findElement(By.id("server-success")).getText()
-    assert.strictEqual(serverSuccessText, "Todo creado exitosamente");
+    assert.strictEqual(serverSuccessText, "Todo creado satisfactoriamente");
   })
 
 

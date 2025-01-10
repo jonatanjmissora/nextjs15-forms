@@ -35,8 +35,8 @@ export default function FormClient() {
 
       {
         !formState?.success
-          ? <div className="text-red-500">{formState?.message}</div>
-          : <div className="text-green-500">{formState?.message}</div>
+          ? <p id="server-error" className="text-red-500">{formState?.message}</p>
+          : <p id="server-success" className="text-green-500">{formState?.message}</p>
       }
 
     </form>

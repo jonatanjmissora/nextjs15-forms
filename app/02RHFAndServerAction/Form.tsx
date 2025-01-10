@@ -45,7 +45,7 @@ export default function FormWithUseActionState() {
 
       <button className='btn btn-primary' type="submit" disabled={isSubmitting}>Crear</button>
 
-      {<p className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse?.message && serverResponse.message}</p>}
+      {<p id="server-response" className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse?.message && serverResponse.message}</p>}
 
     </form>
   )

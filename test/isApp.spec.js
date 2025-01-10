@@ -6,6 +6,7 @@ describe("ACCESO A LA APP", async () => {
     let driver;
 
     before(async function () {
+        this.timeout(0);
         driver = new Builder().forBrowser("chrome").build();
         await driver.get("http://localhost:3000/");
     })
@@ -17,6 +18,5 @@ describe("ACCESO A LA APP", async () => {
     it("Ingreso a la applicacion", async () => {
         const title = await driver.getTitle();
         assert.strictEqual(title, 'Next.js + mongosb')
-    })
-
+    });
 })

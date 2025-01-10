@@ -1,14 +1,14 @@
 import { Builder, By } from 'selenium-webdriver'
 import assert from "assert"
 
-describe("TEST 01", async () => {
+describe("TEST 02", async () => {
 
   let driver;
 
   before(async function () {
     this.timeout(0)
     driver = new Builder().forBrowser("chrome").build();
-    await driver.get("http://localhost:3000/01ClientAndServerAction/");
+    await driver.get("http://localhost:3000/02RHFAndServerAction/");
   })
 
   after(async () => {
@@ -46,8 +46,8 @@ describe("TEST 01", async () => {
     await driver.findElement(By.css(`[type="submit"]`)).click()
     await driver.sleep(2000)
 
-    let serverErrorText = await driver.findElement(By.id("server-error")).getText()
-    assert.strictEqual(serverErrorText, "No puede contener error");
+    let serverResponseText = await driver.findElement(By.id("server-response")).getText()
+    assert.strictEqual(serverResponseText, "No puede contener error");
   })
 
   it("Ingreso valido al form", async () => {
@@ -60,8 +60,8 @@ describe("TEST 01", async () => {
     await driver.findElement(By.css(`[type="submit"]`)).click()
     await driver.sleep(2000)
 
-    let serverSuccessText = await driver.findElement(By.id("server-success")).getText()
-    assert.strictEqual(serverSuccessText, "Todo creado exitosamente");
+    let serverResponseText = await driver.findElement(By.id("server-response")).getText()
+    assert.strictEqual(serverResponseText, "Todo creado satisfactoriamente");
   })
 
 

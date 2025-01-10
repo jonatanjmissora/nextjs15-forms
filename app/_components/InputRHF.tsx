@@ -21,7 +21,7 @@ export const InputRHF = ({ className, label, register, ...props }: InputProps) =
         {...register(`${label}`)}
         {...props}
       />
-      <p className='text-red-700'>{props.error && props.error}</p>
+      <p id={`${label}-error`} className='text-red-700'>{props.error && props.error}</p>
     </>
   )
 }

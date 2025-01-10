@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useFormHook } from "../_lib/hooks/05useFormHookWithModal"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { FieldErrors, RegisterOptions, SubmitHandler, useForm, UseFormRegister, UseFormRegisterReturn } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InputRHF } from "../_components/InputRHF"
 import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
@@ -34,15 +34,15 @@ export default function FormClient() {
                 <p>title: {inputValues.title}</p>
                 <p>content: {inputValues.content}</p>
               </div>
-
+        
               <InputRHF label='title' defaultValue={inputValues.title} error={errors?.title?.message} register={register} className="hidden" />
               <InputRHF label='content' defaultValue={inputValues.content} error={errors?.content?.message} register={register} className="hidden" />
-
+        
               <button type="submit" className="btn btn-primary" disabled={isPending}>Confirmar</button>
               <button type="button" className="btn btn-error" onClick={() => setShowConfirm(prev => !prev)}>Cancelar</button>
-
+      
             </form>
-          )
+            )
           : (
             <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4 flex-col p-4 m-4 w-1/4'>
 
@@ -55,8 +55,8 @@ export default function FormClient() {
 
               {
                 !formState?.success
-                  ? <div className="text-red-500">{formState?.message}</div>
-                  : <div className="text-green-500">{formState?.message}</div>
+                  ? <p id="server-error" className="text-red-500">{formState?.message}</p>
+                  : <p id="server-success" className="text-green-500">{formState?.message}</p>
               }
 
             </form>

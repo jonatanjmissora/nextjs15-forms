@@ -22,7 +22,7 @@ export default function FormWithUseActionState() {
 
       <button className='btn btn-primary' type="submit" disabled={isPending}>{isPending ? "..." : "Crear"}</button>
 
-      {<p className={`${formState?.success ? "text-green-700" : "text-red-700"}`}>{formState?.server && formState?.server}</p>}
+      {<p id="server-response" className={`${formState?.success ? "text-green-700" : "text-red-700"}`}>{formState?.server && formState?.server}</p>}
 
     </form>
   )
