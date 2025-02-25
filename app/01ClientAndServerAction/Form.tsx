@@ -37,7 +37,7 @@ export default function Form() {
     // server validation
     if (!serverResponse.success) {
       setServerResponse({ success: false, message: serverResponse.message })
-      toast.error("Error en el server")
+      toast.error("Error en el servidor")
       return
     }
 
@@ -49,12 +49,14 @@ export default function Form() {
   return (
     <form action={clientAction} className='flex gap-4 flex-col p-4 border m-4'>
 
-      <code>action=`{`clientAction`}`<br />
-        1 - invoco clientAction(formData)<br />
-        2 - verificacion del cliente, puedo usar toast<br />
-        3 - invoco server action addTodo(newTodo)<br />
-        4 - verificacion del servidor, accion en la DB<br />
-        5 - puedo usar la respuesta del servidor<br />
+      <code>form action=`{`clientAction`}`<br />
+        - invoco clientAction(formData)<br />
+        - lo del formData lo paso a los useState `inputFields``
+        - verificacion del cliente (zod), puedo usar toast<br />
+        - utilizo el useState `error` si hay error de validacion<br />
+        - invoco server action addTodo(newTodo), y verifico<br />
+        - puedo usar la respuesta del servidor para el toast<br />
+        - o para mostrarlo con el useState `serverResponse`<br />
         NO utlizo useActionState ni RHF, si utilizo useState<br />
       </code>
 
@@ -66,9 +68,8 @@ export default function Form() {
       <SubmitBtn />
 
       {
-        !serverResponse.success
-          ? <p id="server-error" className="text-red-500">{serverResponse?.message}</p>
-          : <p id="server-success" className="text-green-500">{serverResponse?.message}</p>
+        serverResponse?.message &&
+        <p id="server-response" className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse.message}</p>
       }
 
     </form>

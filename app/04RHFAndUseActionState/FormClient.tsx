@@ -11,7 +11,9 @@ export default function FormClient() {
 
   const formRef = useRef<HTMLFormElement>(null);
   const { register, reset, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
+
   const [formState, formAction, isPending] = useFormHookOnlyServer(reset);
+
   const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
     handleSubmit(() => {

@@ -8,7 +8,7 @@ import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
 import { addTodo } from "../_actions/addTodo.action"
 import { InputRHF } from "../_components/InputRHF"
 
-export default function FormWithUseActionState() {
+export default function RHFconServerAction() {
 
   const [serverResponse, setServerResponse] = useState({ success: false, message: "" })
   const { register, reset, formState: { errors, isSubmitting }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
@@ -31,10 +31,10 @@ export default function FormWithUseActionState() {
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className='flex gap-4 flex-col p-4 border m-4'>
 
-      <code>onSubmit=`{`hanldeSubmit(onSubmit)`}<br />
-        1 - verificacion del cliente con RHF<br />
+      <code>form onSubmit=`{`hanldeSubmit(onSubmit)`}<br />
+        1 - verificacion del cliente con RHF + zod<br />
         2 - invoco server action addTodo(newTodo)<br />
-        3 - dentro del onSubmit<br />
+        3 - utilizo toast y `serverResponse para mostrar resultados`<br />
         NO utlizo useActionState<br />
       </code>
 
@@ -45,7 +45,10 @@ export default function FormWithUseActionState() {
 
       <button className='btn btn-primary' type="submit" disabled={isSubmitting}>Crear</button>
 
-      {<p id="server-response" className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse?.message && serverResponse.message}</p>}
+      {
+        serverResponse?.message &&
+        <p id="server-response" className={`${serverResponse.success ? "text-green-700" : "text-red-700"}`}>{serverResponse.message}</p>
+      }
 
     </form>
   )

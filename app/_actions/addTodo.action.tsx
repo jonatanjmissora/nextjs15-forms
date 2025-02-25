@@ -4,7 +4,6 @@ import { todoSchema, TodoType } from "../_lib/schema/todo.schema";
 
 export type FormState = {
   success: boolean;
-  prevState: Record<string, string>;
   message: string;
 };
 
@@ -17,16 +16,16 @@ export const addTodo = async (
   //server validation
   const { success: serverSuccess } = todoSchema.safeParse(newTodo)
   if (!serverSuccess) {
-    return { success: false, prevState: newTodo, message: "Server Validation Fail" }
+    return { success: false, message: "Server Validation Fail" }
   }
 
-  if (newTodo.title === "error") return { success: false, prevState: newTodo, message: "No puede contener error" }
+  if (newTodo.title === "error") return { success: false, message: "No puede contener error" }
 
   try {
     //insertar en DB
-    return { success: true, prevState: newTodo, message: "Todo creado satisfactoriamente" }
+    return { success: true, message: "Todo creado satisfactoriamente" }
   } catch (error) {
-    return { success: false, prevState: newTodo, message: JSON.stringify(error) || "Server Error" }
+    return { success: false, message: JSON.stringify(error) || "Server Error" }
   }
 
 }
