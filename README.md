@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+** Info: 
+        Testeamos distintas implementaciones de forms en nextjs15 con serverActions. 
+      
+** Utilizamos:
+        zod como validacion y tipo.
+        toast para mostrar resultado.
+        useState para mostrar errores o conservar los valores del input luego de llamar a la accion del form.
+        React Hook Form.
+        useActionState.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+** 01 - Simple Action form
+==========================
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ...
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    const [inputFields, ...] = useState()
+    const [errors, ...] = useState()
+    const [serverResponse, ...] = useState()
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    const formAction = async(formData: FormData) => {
 
-## Learn More
+      const title = formData.get("title") as string
+      const content = formData.get("content") as string
+      setInputFields({ title, content })
+      const newTodo = { title, content }
 
-To learn more about Next.js, take a look at the following resources:
+      //client validation
+      const { success, data, error } = todoSchema.safeParse(newTodo)
+      if (!success) {
+        const { title: titleError, content: contentError } = error.flatten().fieldErrors
+        // aca coloco en el useState `errors` y muestro en toast
+      }
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+      //server action and validation
+      const serverResponse = await addTodo(data)
+      if (!serverResponse.success) {
+        // aca coloco en el useState `serverResponse` y muestro en toast
+      }
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+      //si todo salio bien, toast, muestro `serverResponse` y reset de `inputFields`
 
-## Deploy on Vercel
+    }
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    return (
+      <form action={formAction}>
+        <Input label="title" defaultValue={inputFields.title} error={errors.title} />
+        <SubmitBtn>   // useFormState
+        {
+          serverResponse?.message ...
+        }
+      </form>
+    )
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+** 02 - RHF + ServerAction
+===========================
+
+    ...
+    const [serverResponse, ...] = useState()
+    const {...} = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
+
+    const onSubmit: SubmitHandler<TodoType> = async (data) => {
+
+      // la validacion del cliente la hace RHF + zod
+
+      setServerResponse({ success: false, message: "" })
+      const response = await addTodo(data)
+      if (!response.success) {
+        toast.error("Error en el servidor")
+      }
+      else {
+        toast.success("Todo creado exitosamente")
+        reset()
+      }
+      setServerResponse(response)
+    }
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)} >
+        <InputRHF label={"title"} error={errors?.title?.message || ""} register={register} />
+        <button ... isSubmitting>
+        {
+          serverResponse?.message ...
+        }
+      </form>
+    )
+
+** 03 - useActionState
+=======================
+
+    const [formState, formAction, isPending] = useFormHook()
+
+    return (
+      <form action={formAction} >
+        <Input label='title' defaultValue={formState?.prevState?.title || ""} error={formState?.errors?.title || ""} />
+        <button ... isPending>
+        {
+          serverResponse?.message ...
+        }
+      </form>
+    )
+
+    export type ResType = {
+    success: boolean;
+    prevState: Record<string, string>,
+    errors: Record<string, string>,
+    server?: string,
+    } | null
+
+    const useFormHook = () => {
+
+      const [formState, formAction, isPending] = useActionState(async (prevState: ResType, formData: FormData): Promise<ResType> => {
+    
+        const newTodo = Object.fromEntries(formData.entries())
+        const responseObj = {
+          success: false,
+          prevState: newTodo as TodoType,
+          errors: { title: "", content: "" },
+          server: ""
+        }
+
+        // client validation
+        const { success, data, error } = todoSchema.safeParse(newTodo)
+        if (!success) {
+          responseObj.errors =
+          toast.error("Error Cliente")
+          return responseObj
+        }
+
+        // server validation ...
+
+        // si todo va bien
+        toast.success("Todo añadido")
+        responseObj.success = true
+        responseObj.server = message
+        responseObj.prevState = { title: "", content: "" }
+        return responseObj
+
+      }, null)
+
+      return [formState, formAction, isPending] as const
+    }
+
+** 04 - RHF + useActionState 
+=============================
+(mucha mezcla)
+
+    ...
+    const { register, reset, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
+
+    const [formState, formAction, isPending] = useFormHookOnlyServer(reset);
+    
+    const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+      evt.preventDefault()
+      handleSubmit(() => {
+        startTransition(() => formAction(new FormData(formRef.current!)))
+      })(evt);
+    }
+
+    return (
+      <form ref={formRef} action={formAction} onSubmit={onSubmit}>
+        <InputRHF label={"title"} defaultValue={""} error={errors?.title?.message || ""} register={register} />
+        <button ... isPending>
+        {
+          serverResponse?.message ...
+        }
+
+      </form>
+    )
