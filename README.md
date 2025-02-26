@@ -2,15 +2,15 @@
 ** Info: 
         Testeamos distintas implementaciones de forms en nextjs15 con serverActions. 
       
-** Utilizamos:
-        zod como validacion y tipo.
-        toast para mostrar resultado.
-        useState para mostrar errores o conservar los valores del input luego de llamar a la accion del form.
-        React Hook Form.
-        useActionState.
+<h3> Utilizamos:</h3>
+        zod como validacion y tipo.<br />
+        toast para mostrar resultado.<br />
+        useState para mostrar errores o conservar los valores del input luego de llamar a la accion del form.<br />
+        React Hook Form.<br />
+        useActionState.<br />
 
 
-** 01 - Simple Action form
+01 - Simple Action form
 ==========================
 
     ...
@@ -53,7 +53,7 @@
       </form>
     )
 
-** 02 - RHF + ServerAction
+02 - RHF + ServerAction
 ===========================
 
     ...
@@ -86,7 +86,7 @@
       </form>
     )
 
-** 03 - useActionState
+03 - useActionState
 =======================
 
     const [formState, formAction, isPending] = useFormHook()
@@ -142,7 +142,7 @@
       return [formState, formAction, isPending] as const
     }
 
-** 04 - RHF + useActionState 
+04 - RHF + useActionState 
 =============================
 (mucha mezcla)
 
@@ -182,9 +182,9 @@
       return [formState, formAction, isPending] as const
     }
 
-** 05 - useActionState + RHF + Modal
+05 - useActionState + RHF + Modal
 =====================================
-
+<p>
 Son 2 formularios, el original, y otro para confirmar la operacion. El primero colecta los datos, y los verifica con RHF. Luego en el onSubmit,
 almaceno los `inputFields` y cambio el booleano `showConirm` para intercambiar en pantalla los formularios. Con `inputFields` puedo pasar los valores
 de un formulario al otro
@@ -253,3 +253,4 @@ de un formulario al otro
             <button type="button" onClick={() => setShowConfirm(prev => !prev)}>Cancelar</button>
          </form>
       )
+</p>
