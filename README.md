@@ -1,19 +1,20 @@
 
-** Info: 
+Info:
+====== 
         Testeamos distintas implementaciones de forms en nextjs15 con serverActions. 
       
 <h3> Utilizamos:</h3>
-        zod como validacion y tipo.<br />
-        toast para mostrar resultado.<br />
-        useState para mostrar errores o conservar los valores del input luego de llamar a la accion del form.<br />
-        React Hook Form.<br />
-        useActionState.<br />
+      -  zod como validacion y tipo.<br />
+      -  toast para mostrar resultado.<br />
+      -  useState para mostrar errores o conservar los valores del input luego de llamar a la accion del form.<br />
+      -  React Hook Form.<br />
+      -  useActionState.<br />
 
 
 01 - Simple Action form
 ==========================
 
-    ...
+<p>
 
     const [inputFields, ...] = useState()
     const [errors, ...] = useState()
@@ -52,6 +53,7 @@
         }
       </form>
     )
+</p>
 
 02 - RHF + ServerAction
 ===========================
