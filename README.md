@@ -168,3 +168,88 @@
 
       </form>
     )
+
+    export const useFormHookOnlyServer = (reset: UseFormReset<{ title: string; content: string; }>) => {
+
+      const [formState, formAction, isPending] = useActionState(async (prevState: ResType, formData: FormData): Promise<ResType> => {
+      const newTodo = Object.fromEntries(formData.entries()) as TodoType
+
+      // llamada a server action y validacion
+
+      ...
+      }, null)
+
+      return [formState, formAction, isPending] as const
+    }
+
+** 05 - useActionState + RHF + Modal
+=====================================
+
+Son 2 formularios, el original, y otro para confirmar la operacion. El primero colecta los datos, y los verifica con RHF. Luego en el onSubmit,
+almaceno los `inputFields` y cambio el booleano `showConirm` para intercambiar en pantalla los formularios. Con `inputFields` puedo pasar los valores
+de un formulario al otro
+
+    ...
+
+      const [inputValues, setInputValues] = useState({ title: "", content: "" })
+      const [showConfirm, setShowConfirm] = useState<boolean>(false)
+      const [serverResponse, setServerResponse] = useState({ success: false, message: "" })
+
+      return (
+        <>
+          {
+            showConfirm
+              ? (
+                <ServerForm
+                  inputValues={inputValues}
+                  setInputValues={setInputValues}
+                  setShowConfirm={setShowConfirm}
+                  setServerResponse={setServerResponse}
+                />
+              )
+              : (
+                <ClientForm
+                  inputValues={inputValues}
+                  setInputValues={setInputValues}
+                  setShowConfirm={setShowConfirm}
+                  serverResponse={serverResponse}
+                />
+              )
+          }
+        </>
+      )
+    }
+    
+    export const ClientForm = ({ inputValues, setInputValues, setShowConfirm, serverResponse }:
+
+      const { register, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
+
+      const onSubmit: SubmitHandler<TodoType> = (data) => {
+        const title = data?.title || ""
+        const content = data?.content || ""
+        setShowConfirm(prev => !prev)
+        setInputValues({ title, content })
+      }
+
+      return (
+        <form onSubmit={handleSubmit(onSubmit)} >
+            <InputRHF label='title' defaultValue={inputValues.title} error={errors?.title?.message} register={register} />
+            <button type="submit" className="btn btn-primary" >Crear</button>
+            {
+              serverResponse?.message ...
+            }
+        </form>
+      )
+
+
+    export const ServerForm = ({ inputValues, setInputValues, setShowConfirm, setServerResponse }:
+
+      const [, formAction, isPending] = useFormHook(setShowConfirm, setServerResponse, setInputValues)
+
+      return (
+         <form action={formAction}>
+            <Input label='title' defaultValue={inputValues.title} className="hidden" />
+            <button type="submit" ...isPending>Confirmar</button>
+            <button type="button" onClick={() => setShowConfirm(prev => !prev)}>Cancelar</button>
+         </form>
+      )

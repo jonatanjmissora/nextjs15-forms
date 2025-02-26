@@ -11,7 +11,7 @@ export default function FormWithUseActionState() {
     <form action={formAction} className='flex gap-4 flex-col p-4 m-4 w-1/4'>
 
       <code>useActionState<br />
-        - utilizo un hook para usar el useStateAction
+        - utilizo un hook para usar el useStateAction<br />
         NO utlizo RHF<br />
       </code>
 

@@ -6,7 +6,7 @@ import { addTodo } from "../../_actions/addTodo.action";
 
 export type ResType = {
   success: boolean;
-  prevState: Record<string, string>;
+  // prevState: Record<string, string>;
   message: string;
 } | null
 

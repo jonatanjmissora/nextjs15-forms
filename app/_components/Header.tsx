@@ -23,7 +23,7 @@ export default async function Header() {
         }
       </nav>
       <div className="flex-none">
-        
+
       </div>
     </div>
   )

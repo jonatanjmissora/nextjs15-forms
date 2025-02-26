@@ -1,11 +1,9 @@
-"use client"
+import { SubmitHandler, useForm } from "react-hook-form";
+import { todoSchema, TodoType } from "../_lib/schema/todo.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputRHF } from "../_components/InputRHF";
 
-import { SubmitHandler, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { InputRHF } from "../_components/InputRHF"
-import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
-
-export const FormClient = ({ inputValues, setInputValues, setShowConfirm, serverResponse }:
+export const ClientForm = ({ inputValues, setInputValues, setShowConfirm, serverResponse }:
   {
     inputValues: { title: string; content: string; },
     setInputValues: React.Dispatch<React.SetStateAction<{ title: string; content: string; }>>,
@@ -41,4 +39,3 @@ export const FormClient = ({ inputValues, setInputValues, setShowConfirm, server
     </form>
   )
 }
-
