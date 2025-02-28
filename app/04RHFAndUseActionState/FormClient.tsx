@@ -1,41 +1,44 @@
 "use client"
 
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { startTransition, useRef } from "react"
+import { useFormHookOnlyServer } from "../_lib/hooks/04useFormHookOnlyServer"
 import { InputRHF } from "../_components/InputRHF"
 import { todoSchema, TodoType } from "../_lib/schema/todo.schema"
 
-export const FormClient = ({ inputValues, setInputValues, setShowConfirm, serverResponse }:
-  {
-    inputValues: { title: string; content: string; },
-    setInputValues: React.Dispatch<React.SetStateAction<{ title: string; content: string; }>>,
-    setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>,
-    serverResponse: { success: boolean, message: string }
-  }) => {
+export const FormClient = () => {
 
-  const { register, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
+  const formRef = useRef<HTMLFormElement>(null);
+  const { register, reset, formState: { errors }, handleSubmit } = useForm<TodoType>({ resolver: zodResolver(todoSchema) })
 
-  const onSubmit: SubmitHandler<TodoType> = (data) => {
-    const title = data?.title || ""
-    const content = data?.content || ""
-    setShowConfirm(prev => !prev)
-    setInputValues({ title, content })
+  const [formState, formAction, isPending] = useFormHookOnlyServer(reset);
+
+  const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+    handleSubmit(() => {
+      startTransition(() => formAction(new FormData(formRef.current!)))
+    })(evt);
+
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4 flex-col p-4 m-4 w-1/4'>
-
-      <h2 className='text-2xl font-bold tracking-wide'>useActionState + RHF + Confirm 👍</h2>
-
-      <InputRHF label='title' defaultValue={inputValues.title} error={errors?.title?.message} register={register} />
-      <InputRHF label='content' defaultValue={inputValues.content} error={errors?.content?.message} register={register} />
-
-      <button type="submit" className="btn btn-primary" >Crear</button>
+    <form
+      ref={formRef}
+      className="flex gap-4 flex-col p-4 m-4 w-1/4"
+      action={formAction}
+      onSubmit={onSubmit}
+    >
+      <h2 className='text-2xl font-bold tracking-wide'>useActionState + RHF 👍</h2>
+      <InputRHF label={"title"} defaultValue={""} error={errors?.title?.message || ""} register={register} />
+      <InputRHF label={"content"} defaultValue={""} error={errors?.content?.message || ""} register={register} />
+      <button className="btn btn-info" disabled={isPending} type="submit">Submit</button>
 
       {
-        !serverResponse?.success
-          ? <p id="server-error" className="text-red-500">{serverResponse?.message}</p>
-          : <p id="server-success" className="text-green-500">{serverResponse?.message}</p>
+        !formState?.success
+          ? <p id="server-error" className="text-red-500">{formState?.message}</p>
+          : <p id="server-success" className="text-green-500">{formState?.message}</p>
+
       }
 
     </form>

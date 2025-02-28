@@ -34,7 +34,7 @@ export default function RHFconServerAction() {
       <code>form onSubmit=`{`hanldeSubmit(onSubmit)`}<br />
         1 - verificacion del cliente con RHF + zod<br />
         2 - invoco server action addTodo(newTodo)<br />
-        3 - utilizo toast y `serverResponse para mostrar resultados`<br />
+        3 - utilizo toast y `serverResponse` para mostrar resultados<br />
         NO utlizo useActionState<br />
       </code>
 

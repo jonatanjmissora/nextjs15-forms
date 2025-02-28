@@ -1,4 +1,4 @@
-import FormClient from "./FormClient";
+import { FormClient } from "./FormClient";
 
 export default function page() {
 
